@@ -10,7 +10,7 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private Long id;
 
     private String name;
@@ -22,19 +22,21 @@ public class User {
 
     private String photo;
 
+    private Enum<Role> role;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties("user")
     private List<Post> posts;
 
-    public User() {
-    }
+    public User() {}
 
-    public User(Long id, String name, String email, String password, String photo) {
+    public User(Long id, String name, String email, String password, String photo, Enum<Role> role) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.photo = photo;
+        this.role = role;
     }
 
     public Long getId() {
@@ -79,6 +81,14 @@ public class User {
 
     public List<Post> getPosts() {
         return posts;
+    }
+
+    public Enum<Role> getRole() {
+        return role;
+    }
+
+    public void setRole(Enum<Role> role) {
+        this.role = role;
     }
 
     public void setPosts(List<Post> posts) {
