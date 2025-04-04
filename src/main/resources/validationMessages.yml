@@ -1,0 +1,4 @@
+required:
+  username: name is required
+  password: password is required
+  email: email is required
