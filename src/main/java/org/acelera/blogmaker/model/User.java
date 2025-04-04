@@ -2,12 +2,18 @@ package org.acelera.blogmaker.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User {
 
     @Id
@@ -29,16 +35,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("user")
     private List<Post> posts;
-
-    public User() {}
-
-    public User(String name, String email, String password, String photo, Role role) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.photo = photo;
-        this.role = role;
-    }
 
     public UUID getId() {
         return id;
@@ -95,4 +91,6 @@ public class User {
     public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
+
+
 }
