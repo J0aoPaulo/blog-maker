@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -11,7 +12,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private Long id;
+    private UUID id;
 
     private String name;
 
@@ -22,16 +23,16 @@ public class User {
 
     private String photo;
 
-    private Enum<Role> role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JsonIgnoreProperties("user")
     private List<Post> posts;
 
     public User() {}
 
-    public User(Long id, String name, String email, String password, String photo, Enum<Role> role) {
-        this.id = id;
+    public User(String name, String email, String password, String photo, Role role) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -39,11 +40,11 @@ public class User {
         this.role = role;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -83,11 +84,11 @@ public class User {
         return posts;
     }
 
-    public Enum<Role> getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(Enum<Role> role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
