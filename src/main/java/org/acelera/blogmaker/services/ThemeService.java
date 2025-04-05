@@ -3,72 +3,71 @@ package org.acelera.blogmaker.services;
 import org.acelera.blogmaker.exception.ThemeAlreadyExistException;
 import org.acelera.blogmaker.exception.ThemeNotFoundException;
 import org.acelera.blogmaker.model.Theme;
+import org.acelera.blogmaker.model.dto.request.CreateThemeRequest;
+import org.acelera.blogmaker.model.dto.response.ThemeResponse;
 import org.acelera.blogmaker.repository.ThemeRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.acelera.blogmaker.services.mapper.ThemeMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ThemeService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ThemeService.class);
-
     private final ThemeRepository themeRepository;
+    private final ThemeMapper mapper;
 
-    public ThemeService(ThemeRepository themeRepository) {
+    public ThemeService(ThemeRepository themeRepository, ThemeMapper mapper) {
         this.themeRepository = themeRepository;
+        this.mapper = mapper;
     }
 
-    public List<Theme> findAllThemes() {
-        logger.debug("Recuperando todos os temas");
-        return themeRepository.findAll();
-    }
-
-    public Theme findThemeById(Long id) {
-        logger.debug("Buscando tema com id: {}", id);
-        return themeRepository.findById(id)
-                .orElseThrow(() -> {
-                    logger.error("Tema não encontrado com id: {}", id);
-                    return new ThemeNotFoundException("Theme not found with id: " + id);
-                });
-    }
-
-    @Transactional
-    public Theme createTheme(Theme theme) {
-        String description = (theme.getDescription() != null) ? theme.getDescription().trim() : "";
-        if (description.isEmpty()) {
-            throw new IllegalArgumentException("Theme description must not be empty");
-        }
-
+    public Long createTheme(CreateThemeRequest request) {
+        String description = request.description().trim();
         if (themeRepository.existsByDescription(description)) {
             throw new ThemeAlreadyExistException("Theme already exists with description: " + description);
         }
 
-        theme.setDescription(description);
-        return themeRepository.save(theme);
+        var theme = themeRepository.save(mapper.toTheme(request));
+        return theme.getId();
     }
 
-    @Transactional
-    public Theme updateTheme(Long id, Theme newTheme) {
-        Theme existing = findThemeById(id);
-        if (newTheme.getDescription() != null && !newTheme.getDescription().trim().isEmpty()) {
-            String updatedDescription = newTheme.getDescription().trim();
-            if (!existing.getDescription().equals(updatedDescription) &&
-                    themeRepository.existsByDescription(updatedDescription)) {
-                throw new ThemeAlreadyExistException("Theme already exists with description: " + updatedDescription);
-            }
-            existing.setDescription(updatedDescription);
-        }
-        return themeRepository.save(existing);
+    public ThemeResponse getThemeById(Long id) {
+        return themeRepository.findById(id)
+                .map(mapper::fromTheme)
+                .orElseThrow(() -> new ThemeNotFoundException("Theme not found with id: " + id));
     }
 
-    @Transactional
+    public List<ThemeResponse> getAllThemes() {
+        return themeRepository.findAll()
+                .stream()
+                .map(mapper::fromTheme)
+                .collect(Collectors.toList());
+    }
+
+    public ThemeResponse updateTheme(Long id, CreateThemeRequest request) {
+        Theme theme = themeRepository.findById(id)
+                .orElseThrow(() -> new ThemeNotFoundException("Theme not found with id: " + id));
+
+        mergeTheme(theme, request);
+        return mapper.fromTheme(theme);
+    }
+
+    private void mergeTheme(Theme theme, CreateThemeRequest request) {
+        String newDescription = request.description().trim();
+
+        if (!theme.getDescription().equals(newDescription) && themeRepository.existsByDescription(newDescription))
+            throw new ThemeAlreadyExistException("Theme already exists with description: " + newDescription);
+
+        themeRepository.save(theme);
+        theme.setDescription(newDescription);
+    }
+
     public void deleteTheme(Long id) {
-        Theme theme = findThemeById(id);
+        Theme theme = themeRepository.findById(id)
+                .orElseThrow(() -> new ThemeNotFoundException("Theme not found with id: " + id));
+
         themeRepository.delete(theme);
-        logger.info("Tema excluído com sucesso, id: {}", id);
     }
 }
