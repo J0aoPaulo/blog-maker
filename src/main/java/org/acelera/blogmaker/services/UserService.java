@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
     private final UserRepository repository;
     private final UserMapper mapper;
+    private static final String USER_NOT_FOUND = "User not found with id: ";
 
    public UserService(UserRepository repository, UserMapper mapper) {
         this.repository = repository;
@@ -29,7 +29,7 @@ public class UserService {
     public UUID createUser(CreateUserRequest request, Role role) {
        var userEmailExists = repository.existsByEmail(request.email());
 
-        if(userEmailExists)
+        if(Boolean.TRUE.equals(userEmailExists))
             throw new UserAlreadyExistException("User already exist in database");
 
         var user = repository.save(mapper.toUser(request, role));
@@ -54,7 +54,7 @@ public class UserService {
     public UserResponse updateUser(UUID userId, UpdateUserRequest request) {
         var user = repository
                 .findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(String.format("User with id: %s not found", userId)));;
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND + userId));
 
         setUser(user, request);
         return mapper.fromUser(user);
@@ -64,14 +64,14 @@ public class UserService {
         return repository
                 .findById(userId)
                 .map(this.mapper::fromUser)
-                .orElseThrow(() -> new UserNotFoundException(String.format("User with id: %s not found", userId)));
+                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND + userId));
     }
 
     public List<UserResponse> findAllUsers() {
         return this.repository.findAll()
                 .stream()
                 .map(this.mapper::fromUser)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void deleteUser(UUID userId) {

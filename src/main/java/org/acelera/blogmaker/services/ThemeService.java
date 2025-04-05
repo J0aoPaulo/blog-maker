@@ -10,13 +10,13 @@ import org.acelera.blogmaker.services.mapper.ThemeMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ThemeService {
 
     private final ThemeRepository themeRepository;
     private final ThemeMapper mapper;
+    private static final String THEME_NOT_FOUND = "Theme not found with id: ";
 
     public ThemeService(ThemeRepository themeRepository, ThemeMapper mapper) {
         this.themeRepository = themeRepository;
@@ -36,19 +36,19 @@ public class ThemeService {
     public ThemeResponse getThemeById(Long id) {
         return themeRepository.findById(id)
                 .map(mapper::fromTheme)
-                .orElseThrow(() -> new ThemeNotFoundException("Theme not found with id: " + id));
+                .orElseThrow(() -> new ThemeNotFoundException(THEME_NOT_FOUND));
     }
 
     public List<ThemeResponse> getAllThemes() {
         return themeRepository.findAll()
                 .stream()
                 .map(mapper::fromTheme)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public ThemeResponse updateTheme(Long id, CreateThemeRequest request) {
         Theme theme = themeRepository.findById(id)
-                .orElseThrow(() -> new ThemeNotFoundException("Theme not found with id: " + id));
+                .orElseThrow(() -> new ThemeNotFoundException(THEME_NOT_FOUND));
 
         mergeTheme(theme, request);
         return mapper.fromTheme(theme);
@@ -66,7 +66,7 @@ public class ThemeService {
 
     public void deleteTheme(Long id) {
         Theme theme = themeRepository.findById(id)
-                .orElseThrow(() -> new ThemeNotFoundException("Theme not found with id: " + id));
+                .orElseThrow(() -> new ThemeNotFoundException(THEME_NOT_FOUND));
 
         themeRepository.delete(theme);
     }

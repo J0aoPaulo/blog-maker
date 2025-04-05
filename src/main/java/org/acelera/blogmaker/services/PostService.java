@@ -14,7 +14,6 @@ import org.acelera.blogmaker.services.mapper.PostMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PostService {
@@ -22,6 +21,7 @@ public class PostService {
     private final PostRepository repository;
     private final ThemeRepository themeRepository;
     private final PostMapper mapper;
+    private static final String POST_NOT_FOUND = "Post not found with id: ";
 
     public PostService(PostRepository repository, PostMapper mapper, ThemeRepository themeRepository) {
         this.repository = repository;
@@ -46,20 +46,20 @@ public class PostService {
         return repository
                 .findById(postId)
                 .map(mapper::fromPost)
-                .orElseThrow(() -> new PostNotFoundException("Post not found with id: " + postId));
+                .orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND));
     }
 
     public List<PostResponse> getAllPosts() {
         return repository.findAll()
                 .stream()
                 .map(mapper::fromPost)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public PostResponse updatePost(Long postId, CreatePostRequest request, Long themeId) {
         var post = repository
                 .findById(postId)
-                .orElseThrow(() -> new PostNotFoundException("Post not found with id: " + postId));
+                .orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND));
 
         var theme = themeId == null ? null : themeRepository.findById(themeId)
                 .orElseThrow(() -> new PostNotFoundException("Theme not found with id: " + themeId));
@@ -84,7 +84,7 @@ public class PostService {
     public void deletePost(Long postId) {
         var post = repository
                 .findById(postId)
-                .orElseThrow(() -> new PostNotFoundException("Post not found with id: " + postId));
+                .orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND));
 
         repository.delete(post);
     }
