@@ -60,8 +60,8 @@ public class ThemeService {
         if (!theme.getDescription().equals(newDescription) && themeRepository.existsByDescription(newDescription))
             throw new ThemeAlreadyExistException("Theme already exists with description: " + newDescription);
 
-        themeRepository.save(theme);
         theme.setDescription(newDescription);
+        themeRepository.save(theme);
     }
 
     public void deleteTheme(Long id) {
