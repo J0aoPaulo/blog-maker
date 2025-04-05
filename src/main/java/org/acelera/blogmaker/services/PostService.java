@@ -62,8 +62,7 @@ public class PostService {
                 .orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND));
 
         var theme = themeId == null ? null : themeRepository.findById(themeId)
-                .orElseThrow(() -> new PostNotFoundException("Theme not found with id: " + themeId));
-
+                .orElseThrow(() -> new ThemeNotFoundException("Theme not found with id: " + themeId));
         setPost(post, request, theme);
         return mapper.fromPost(post);
     }
