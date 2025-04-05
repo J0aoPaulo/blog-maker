@@ -2,11 +2,17 @@ package org.acelera.blogmaker.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Entity
 @Table(name = "themes")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Theme {
 
     @Id

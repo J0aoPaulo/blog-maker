@@ -7,6 +7,7 @@ public record CreateUserRequest (
         @NotBlank(message = "{required.email}")
         @Email
         String email,
+
         @NotBlank(message = "{required.password}")
         String password
 ){}

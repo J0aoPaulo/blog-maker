@@ -8,6 +8,7 @@ class BlogMakerApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// This test class is empty because it is used to check if the Spring application context loads successfully.
 	}
 
 }
