@@ -2,6 +2,9 @@ package org.acelera.blogmaker.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -9,6 +12,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "posts")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Post {
 
     @Id
@@ -32,15 +38,6 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties("posts")
     private User user;
-
-    public Post() {}
-
-    public Post(String title, String content, Theme theme, User user) {
-        this.title = title;
-        this.content = content;
-        this.theme = theme;
-        this.user = user;
-    }
 
     public Long getId() {
         return id;
@@ -88,5 +85,13 @@ public class Post {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
