@@ -5,17 +5,10 @@ import org.acelera.blogmaker.model.Theme;
 import org.acelera.blogmaker.model.User;
 import org.acelera.blogmaker.model.dto.request.CreatePostRequest;
 import org.acelera.blogmaker.model.dto.response.PostResponse;
-import org.acelera.blogmaker.model.dto.response.ThemeResponse;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PostMapper {
-
-    private final UserMapper userMapper;
-
-    public PostMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
 
     public Post toPost(CreatePostRequest request, User user, Theme theme) {
         return Post.builder()
@@ -33,8 +26,9 @@ public class PostMapper {
                 post.getContent(),
                 post.getCreatedAt(),
                 post.getUpdatedAt(),
-                new ThemeResponse(post.getTheme().getDescription()),
-                userMapper.fromUser(post.getUser())
+                post.getTheme() != null ? post.getTheme().getDescription() : null,
+                post.getUser().getName(),
+                post.getUser().getRole().name()
         );
     }
 }

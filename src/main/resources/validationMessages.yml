@@ -1,8 +1,9 @@
 required:
-  username: name is required
+  name: name is required
   password: password is required
   email: email is required
   title: title is required
   content: content is required
   theme: theme is required
   description: description is required
+  user: user is required
