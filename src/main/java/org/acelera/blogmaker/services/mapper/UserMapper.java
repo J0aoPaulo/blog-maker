@@ -12,6 +12,7 @@ public class UserMapper {
     public User toUser(CreateUserRequest request, Role role) {
         return User.builder()
                 .id(null)
+                .name(request.name())
                 .email(request.email())
                 .password(request.password())
                 .role(role)
