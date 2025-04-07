@@ -231,7 +231,7 @@ Sua contribuição é muito bem-vinda! Para contribuir:
 
 ## 📄 Licença
 
-Este projeto está licenciado sob a [GNU License](LICENSE).
+Este projeto está licenciado sob a [GNU License](LICENSE.md).
 
 ## 📞 Contato
 
