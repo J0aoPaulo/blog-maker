@@ -1,5 +1,7 @@
-package org.acelera.blogmaker.security;
+package org.acelera.blogmaker.config;
 
+import org.acelera.blogmaker.security.JwtAuthenticationFilter;
+import org.acelera.blogmaker.security.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -36,7 +38,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/register").permitAll()
                         .requestMatchers("/api/v1/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, API_POSTS).permitAll()
+                        .requestMatchers("/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-resources/**",
+                                "/swagger-ui.html")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, API_POSTS).authenticated()
                         .requestMatchers(HttpMethod.POST, API_POSTS).authenticated()
                         .requestMatchers(HttpMethod.PUT, API_POSTS).authenticated()
                         .requestMatchers(HttpMethod.DELETE, API_POSTS).authenticated()
