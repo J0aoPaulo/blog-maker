@@ -8,6 +8,7 @@ import org.acelera.blogmaker.model.dto.response.ThemeResponse;
 import org.acelera.blogmaker.repository.ThemeRepository;
 import org.acelera.blogmaker.services.ThemeService;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ class ThemeServiceIntegrationTest {
     private final ThemeService themeService;
     private final ThemeRepository themeRepository;
 
+    @Autowired
     public ThemeServiceIntegrationTest(ThemeService themeService, ThemeRepository themeRepository) {
         this.themeService = themeService;
         this.themeRepository = themeRepository;

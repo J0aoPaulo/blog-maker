@@ -26,9 +26,9 @@ class PostServiceIntegrationTest {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
 
-    public PostServiceIntegrationTest(@Autowired PostService postService,
-                                    @Autowired UserRepository userRepository,
-                                    @Autowired PostRepository postRepository) {
+    @Autowired
+    public PostServiceIntegrationTest(PostService postService, UserRepository userRepository,
+                                    PostRepository postRepository) {
         this.postService = postService;
         this.userRepository = userRepository;
         this.postRepository = postRepository;
