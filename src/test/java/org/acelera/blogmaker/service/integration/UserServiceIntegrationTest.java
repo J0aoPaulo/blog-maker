@@ -28,7 +28,8 @@ class UserServiceIntegrationTest {
     private final UserService userService;
     private final UserRepository userRepository;
 
-    UserServiceIntegrationTest(@Autowired UserService userService, @Autowired UserRepository userRepository) {
+    @Autowired
+    UserServiceIntegrationTest(UserService userService, UserRepository userRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
     }
