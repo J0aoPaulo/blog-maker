@@ -35,6 +35,9 @@ O BlogMaker é uma aplicação web robusta desenvolvida com Spring Boot que perm
    - Mockito
    - Spring Test
 
+- **Documentação**:
+   - Swagger
+
 ## ⚙️ Pré-requisitos
 
 Para executar o projeto, você precisará ter instalado:
