@@ -30,6 +30,12 @@
 		<java.version>21</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<sonar.token>squ_02ba5e5f409b96bff03222f3a33bb2dfbf7f4a79</sonar.token>
+		<sonar.projectKey>blog-maker</sonar.projectKey>
+		<sonar.projectName>Blog Maker</sonar.projectName>
+		<sonar.host.url>http://localhost:9000</sonar.host.url>
+		<sonar.tests>src/test/java</sonar.tests>
+		<sonar.sources>src/main/java</sonar.sources>
 	</properties>
 	<dependencies>
 		<dependency>
