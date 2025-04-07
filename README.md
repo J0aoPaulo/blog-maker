@@ -85,14 +85,6 @@ docker-compose up -d --build
 
 A aplicação estará disponível em `http://localhost:8080`
 
-### Ambiente de Produção
-
-Para implantar em ambiente de produção com configurações específicas:
-
-```bash
-docker-compose -f docker-compose.prod.yml up -d
-```
-
 ## 🔍 Estrutura da API
 
 A API do BlogMaker segue a arquitetura REST e está versionada (v1).
