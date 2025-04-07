@@ -2,15 +2,12 @@ package org.acelera.blogmaker.controller.v1;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.acelera.blogmaker.model.Role;
-import org.acelera.blogmaker.model.dto.request.CreateUserRequest;
 import org.acelera.blogmaker.model.dto.request.UpdateUserRequest;
 import org.acelera.blogmaker.model.dto.response.UserResponse;
 import org.acelera.blogmaker.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,13 +19,6 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
-    }
-
-    @PostMapping
-    @Transactional
-    public ResponseEntity<Void> createUser(@Valid @RequestBody CreateUserRequest request) {
-        UUID userId = userService.createUser(request, Role.USER);
-        return ResponseEntity.created(URI.create("/api/v1/users/" + userId)).build();
     }
 
     @PutMapping("/{userId}")
