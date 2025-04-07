@@ -26,14 +26,13 @@ public class UserService {
         this.mapper = mapper;
    }
 
-    public UUID createUser(CreateUserRequest request, Role role) {
+    public User createUser(CreateUserRequest request, Role role) {
        var userEmailExists = repository.existsByEmail(request.email());
 
         if(Boolean.TRUE.equals(userEmailExists))
             throw new UserAlreadyExistException("User already exist in database");
 
-        var user = repository.save(mapper.toUser(request, role));
-        return user.getId();
+        return repository.save(mapper.toUser(request, role));
     }
 
     private void setUser(User user, UpdateUserRequest request) {
