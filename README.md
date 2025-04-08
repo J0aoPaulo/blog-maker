@@ -42,7 +42,7 @@ O BlogMaker é uma aplicação web robusta desenvolvida com Spring Boot que perm
 
 Para executar o projeto, você precisará ter instalado:
 
-- Java Development Kit (JDK) 17
+- Java Development Kit (JDK) 21
 - Maven 3.6+
 - Docker e Docker Compose (recomendado)
 - Git
