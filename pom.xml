@@ -30,7 +30,6 @@
 		<java.version>21</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<sonar.token>squ_02ba5e5f409b96bff03222f3a33bb2dfbf7f4a79</sonar.token>
 	</properties>
 	<dependencies>
 		<dependency>
