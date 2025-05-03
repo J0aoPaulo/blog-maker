@@ -8,6 +8,8 @@ import org.acelera.blogmaker.exception.PostNotFoundException;
 import org.acelera.blogmaker.exception.ThemeNotFoundException;
 import org.acelera.blogmaker.exception.UserNotFoundException;
 import org.acelera.blogmaker.model.Post;
+import org.acelera.blogmaker.model.Role;
+import org.acelera.blogmaker.model.Theme;
 import org.acelera.blogmaker.model.User;
 import org.acelera.blogmaker.model.dto.request.CreatePostRequest;
 import org.acelera.blogmaker.model.dto.request.UpdatePostRequest;
@@ -25,6 +27,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -158,21 +161,50 @@ class PostServiceTest {
 
     @Test
     void filterPosts_ShouldReturnAllPosts_WhenNoFilter() {
-        Post post = new Post();
+        Theme theme = Theme.builder()
+                .id(1L)
+                .description("Theme")
+                .build();
+        User user = User.builder()
+                .id(UUID.randomUUID())
+                .name("User Name")
+                .email("user@example.com")
+                .password("password")
+                .photo("photo.png")
+                .role(Role.USER)
+                .build();
+
+        LocalDateTime now = LocalDateTime.now();
+        Post post = Post.builder()
+                .id(1L)
+                .title("Title")
+                .content("Content")
+                .createdAt(now)
+                .updatedAt(now)
+                .theme(theme)
+                .user(user)
+                .build();
+
         PostResponse response = new PostResponse(
+                1L,
                 "Title",
                 "Content",
-                LocalDateTime.now(),
-                LocalDateTime.now(),
+                now,
+                now,
                 "Theme",
+                1L,
                 "User Name",
-                "User Role"
+                user.getId(),
+                "USER",
+                "photo.png"
         );
+
         when(repository.findAll()).thenReturn(Collections.singletonList(post));
         when(mapper.fromPost(post)).thenReturn(response);
 
-        var result = postService.getAllPosts();
-        assertEquals(1, result.size());
-        assertEquals("Title", result.getFirst().title());
+        List<PostResponse> result = postService.getAllPosts();
+
+        assertEquals(1, result.size(), "Deve retornar exatamente um post");
+        assertEquals("Title", result.getFirst().title(), "O título deve ser 'Title'");
     }
 }
