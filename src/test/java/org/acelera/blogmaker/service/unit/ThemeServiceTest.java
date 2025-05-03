@@ -71,14 +71,22 @@ class ThemeServiceTest {
 
     @Test
     void getAllThemes_ShouldReturnListOfThemes() {
-        Theme theme = Theme.builder().id(1L).description("Science").build();
-        ThemeResponse response = new ThemeResponse("Science");
-        when(themeRepository.findAll()).thenReturn(Collections.singletonList(theme));
-        when(mapper.fromTheme(theme)).thenReturn(response);
+        Theme theme = Theme.builder()
+                .id(1L)
+                .description("Science")
+                .build();
+        ThemeResponse response = new ThemeResponse(1L, "Science");
+
+        when(themeRepository.findAll())
+                .thenReturn(Collections.singletonList(theme));
+        when(mapper.fromTheme(theme))
+                .thenReturn(response);
 
         List<ThemeResponse> themes = themeService.getAllThemes();
-        assertEquals(1, themes.size());
-        assertEquals("Science", themes.getFirst().description());
+
+        assertEquals(1, themes.size(), "Deve retornar exatamente 1 tema");
+        assertEquals(1L, themes.get(0).id(), "O ID deve ser 1");
+        assertEquals("Science", themes.get(0).description(), "A descrição deve ser 'Science'");
     }
 
     @Test
