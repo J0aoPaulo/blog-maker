@@ -35,11 +35,14 @@ O BlogMaker é uma aplicação web robusta desenvolvida com Spring Boot que perm
    - Mockito
    - Spring Test
 
+- **Documentação**:
+   - Swagger
+
 ## ⚙️ Pré-requisitos
 
 Para executar o projeto, você precisará ter instalado:
 
-- Java Development Kit (JDK) 17
+- Java Development Kit (JDK) 21
 - Maven 3.6+
 - Docker e Docker Compose (recomendado)
 - Git
@@ -85,32 +88,45 @@ docker-compose up -d --build
 
 A aplicação estará disponível em `http://localhost:8080`
 
-### Ambiente de Produção
-
-Para implantar em ambiente de produção com configurações específicas:
-
-```bash
-docker-compose -f docker-compose.prod.yml up -d
-```
-
 ## 🔍 Estrutura da API
 
 A API do BlogMaker segue a arquitetura REST e está versionada (v1).
 
 ### Endpoints Principais
 
+#### Autenticação
+| Método | URL | Descrição |
+|--------|-----|-----------|
+| POST | /api/v1/auth/register | Registra um novo usuário |
+| POST | /api/v1/auth/login | Realiza autenticação |
+| POST | /api/v1/auth/admin/register | Registra um novo administrador |
+
+#### Usuários
+| Método | URL | Descrição |
+|--------|-----|-----------|
+| GET | /api/v1/users | Lista todos os usuários |
+| GET | /api/v1/users/{userId} | Obtém um usuário pelo ID |
+| PUT | /api/v1/users/{userId} | Atualiza um usuário existente |
+| DELETE | /api/v1/users/{userId} | Remove um usuário |
+
+#### Posts
 | Método | URL | Descrição |
 |--------|-----|-----------|
 | GET | /api/v1/posts | Lista todos os posts |
-| GET | /api/v1/posts/{id} | Obtém um post pelo ID |
+| GET | /api/v1/posts/filter | Filtra posts por critérios específicos |
+| GET | /api/v1/posts/{postId} | Obtém um post pelo ID |
 | POST | /api/v1/posts | Cria um novo post |
-| PUT | /api/v1/posts/{id} | Atualiza um post existente |
-| DELETE | /api/v1/posts/{id} | Remove um post |
-| GET | /api/v1/users | Lista todos os usuários |
-| GET | /api/v1/users/{id} | Obtém um usuário pelo ID |
-| POST | /api/v1/auth/login | Realiza autenticação |
-| POST | /api/v1/auth/register | Registra um novo usuário |
-| POST | /api/v1/auth/refresh | Atualiza o token de acesso |
+| PUT | /api/v1/posts/{postId} | Atualiza um post existente |
+| DELETE | /api/v1/posts/{postId} | Remove um post |
+
+#### Temas
+| Método | URL | Descrição |
+|--------|-----|-----------|
+| GET | /api/v1/themes | Lista todos os temas |
+| GET | /api/v1/themes/{themeId} | Obtém um tema pelo ID |
+| POST | /api/v1/themes | Cria um novo tema |
+| PUT | /api/v1/themes/{themeId} | Atualiza um tema existente |
+| DELETE | /api/v1/themes/{themeId} | Remove um tema existente |
 
 ## 📊 Arquitetura do Projeto
 
@@ -236,7 +252,7 @@ Sua contribuição é muito bem-vinda! Para contribuir:
 
 ## 📄 Licença
 
-Este projeto está licenciado sob a [GNU License](LICENSE).
+Este projeto está licenciado sob a [GNU License](LICENSE.md).
 
 ## 📞 Contato
 
