@@ -17,6 +17,7 @@ public class ThemeMapper {
 
     public ThemeResponse fromTheme(Theme theme) {
         return new ThemeResponse(
+                theme.getId(),
                 theme.getDescription()
         );
     }
