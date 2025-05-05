@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import jakarta.transaction.Transactional;
-
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,17 +26,20 @@ class PostServiceIntegrationTest {
     private final PostRepository postRepository;
 
     @Autowired
-    public PostServiceIntegrationTest(PostService postService, UserRepository userRepository,
-                                    PostRepository postRepository) {
+    public PostServiceIntegrationTest(PostService postService,
+                                      UserRepository userRepository,
+                                      PostRepository postRepository) {
         this.postService = postService;
         this.userRepository = userRepository;
         this.postRepository = postRepository;
     }
+
     private User user;
 
     @BeforeEach
     void setup() {
-        user = User.builder().name("Integration User")
+        user = User.builder()
+                .name("Integration User")
                 .email("integration@example.com")
                 .password("pass")
                 .build();
@@ -47,24 +49,36 @@ class PostServiceIntegrationTest {
     @Test
     @Transactional
     void createPostIntegrationTest_Success() {
-        CreatePostRequest request = new CreatePostRequest("Integration Title", "Integration Content", null, user.getId());
-        Long postId = postService.createPost(request, user.getId(), request.themeId());
-        assertNotNull(postId);
+        // Arrange
+        CreatePostRequest request = new CreatePostRequest(
+                "Integration Title",
+                "Integration Content",
+                null
+        );
+        UUID userId = user.getId();
 
+        Long postId = postService.createPost(request, userId, request.themeId());
+
+        assertNotNull(postId);
         Post post = postRepository.findById(postId).orElse(null);
         assertNotNull(post);
         assertEquals("Integration Title", post.getTitle());
+        assertEquals(userId, post.getUser().getId());
     }
 
     @Test
     @Transactional
     void createPostIntegrationTest_Fail_Duplicate() {
-        CreatePostRequest request = new CreatePostRequest("Dup Title", "Dup Content", null, user.getId());
-        postService.createPost(request, user.getId(), request.themeId());
-
+        CreatePostRequest request = new CreatePostRequest(
+                "Dup Title",
+                "Dup Content",
+                null
+        );
         UUID userId = user.getId();
-        Long themeId = request.themeId();
-        assertThrows(PostAlreadyExistException.class,
-                () -> postService.createPost(request, userId, themeId));
+        postService.createPost(request, userId, request.themeId());
+
+        assertThrows(PostAlreadyExistException.class, () ->
+                postService.createPost(request, userId, request.themeId())
+        );
     }
 }
