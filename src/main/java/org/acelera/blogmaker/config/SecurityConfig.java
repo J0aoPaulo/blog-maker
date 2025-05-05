@@ -31,6 +31,7 @@ public class SecurityConfig {
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtAuthenticationFilter jwtAuthFilter;
     private static final String API_POSTS = "/api/v1/posts/**";
+    private static final String API_ANALYTICS = "/api/v1/analytics/**";
 
     public SecurityConfig( UserDetailsServiceImpl userDetailsService, JwtAuthenticationFilter jwtAuthFilter) {
         this.userDetailsService = userDetailsService;
@@ -50,12 +51,15 @@ public class SecurityConfig {
                                 "/swagger-resources/**",
                                 "/swagger-ui.html")
                         .permitAll()
-                        .requestMatchers(HttpMethod.GET, API_POSTS).permitAll()
-                        .requestMatchers(HttpMethod.POST, API_POSTS).permitAll()
-                        .requestMatchers(HttpMethod.PUT, API_POSTS).permitAll()
-                        .requestMatchers(HttpMethod.DELETE, API_POSTS).permitAll()
+                        .requestMatchers(HttpMethod.GET, API_ANALYTICS).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/posts").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/posts/{id}").permitAll()
+                        .requestMatchers(HttpMethod.GET, API_POSTS).authenticated()
+                        .requestMatchers(HttpMethod.POST, API_POSTS).authenticated()
+                        .requestMatchers(HttpMethod.PUT, API_POSTS).authenticated()
+                        .requestMatchers(HttpMethod.DELETE, API_POSTS).authenticated()
                         .requestMatchers("/api/v1/auth/admin/**").hasRole("OWNER")
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
