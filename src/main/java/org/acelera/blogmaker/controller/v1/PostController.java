@@ -5,8 +5,11 @@ import jakarta.validation.Valid;
 import org.acelera.blogmaker.model.dto.request.CreatePostRequest;
 import org.acelera.blogmaker.model.dto.request.UpdatePostRequest;
 import org.acelera.blogmaker.model.dto.response.PostResponse;
+import org.acelera.blogmaker.security.UserDetailsImpl;
 import org.acelera.blogmaker.services.PostService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -27,7 +30,11 @@ public class PostController {
     @PostMapping
     @Transactional
     public ResponseEntity<Void> createPost(@Valid @RequestBody CreatePostRequest request) {
-        Long postId = postService.createPost(request, request.userId(), request.themeId());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        UUID userId = userDetails.getId();
+
+        Long postId = postService.createPost(request, userId, request.themeId());
 
         return ResponseEntity.created(URI.create("/api/v1/posts/" + postId)).build();
     }

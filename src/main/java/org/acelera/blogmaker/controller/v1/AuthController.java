@@ -2,9 +2,11 @@ package org.acelera.blogmaker.controller.v1;
 
 import jakarta.validation.Valid;
 import org.acelera.blogmaker.model.Role;
+import org.acelera.blogmaker.model.User;
 import org.acelera.blogmaker.model.dto.request.AuthRequest;
 import org.acelera.blogmaker.model.dto.request.CreateUserRequest;
 import org.acelera.blogmaker.model.dto.response.AuthResponse;
+import org.acelera.blogmaker.model.dto.response.UserDto;
 import org.acelera.blogmaker.security.JwtUtil;
 import org.acelera.blogmaker.security.UserDetailsImpl;
 import org.acelera.blogmaker.services.UserService;
@@ -39,7 +41,11 @@ public class AuthController {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         String token = jwtUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new AuthResponse(token));
+        
+        User user = userService.findByEmail(userDetails.getUsername());
+        UserDto userDto = new UserDto(user);
+        
+        return ResponseEntity.ok(new AuthResponse(token, userDto));
     }
 
     @PostMapping("/register")
@@ -56,6 +62,7 @@ public class AuthController {
         var user = userService.createUser(request, role);
         UserDetailsImpl userDetails = new UserDetailsImpl(user);
         String token = jwtUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new AuthResponse(token));
+        UserDto userDto = new UserDto(user);
+        return ResponseEntity.ok(new AuthResponse(token, userDto));
     }
 }
