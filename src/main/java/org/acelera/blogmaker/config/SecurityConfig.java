@@ -74,7 +74,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOriginPatterns(List.of("http://localhost:4200"));
+        config.setAllowedOriginPatterns(List.of("http://localhost:4200", "https://blog-maker-front-production.up.railway.app"));
         config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
 
