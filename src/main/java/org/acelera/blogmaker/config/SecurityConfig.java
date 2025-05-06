@@ -76,7 +76,8 @@ public class SecurityConfig {
         config.setAllowCredentials(true);
         config.setAllowedOrigins(List.of(
                 "http://localhost:4200",
-                "https://blog-maker-front-production.up.railway.app"
+                "https://blog-maker-front-production.up.railway.app",
+                "https://blog-maker-production.up.railway.app"
         ));
         config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
