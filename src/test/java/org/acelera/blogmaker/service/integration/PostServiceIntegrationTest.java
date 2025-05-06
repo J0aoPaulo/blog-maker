@@ -49,7 +49,6 @@ class PostServiceIntegrationTest {
     @Test
     @Transactional
     void createPostIntegrationTest_Success() {
-        // Arrange
         CreatePostRequest request = new CreatePostRequest(
                 "Integration Title",
                 "Integration Content",
