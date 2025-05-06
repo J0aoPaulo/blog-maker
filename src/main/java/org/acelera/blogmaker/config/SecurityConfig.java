@@ -74,11 +74,12 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of(
-                "http://localhost:4200",
-                "https://blog-maker-front-production.up.railway.app",
-                "https://blog-maker-production.up.railway.app"
-        ));
+        // config.addAllowedOrigin("http://localhost:4200");
+        // config.addAllowedOrigin("https://blog-maker-front-production.up.railway.app");
+        // config.addAllowedOrigin("https://blog-maker-production.up.railway.app");
+        
+        config.addAllowedOriginPattern("*");
+        
         config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setExposedHeaders(List.of("Authorization","Content-Type"));
