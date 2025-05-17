@@ -45,8 +45,8 @@ public interface PostAnalyticsRepository extends JpaRepository<Post, Long> {
      *  Atenção: usa coluna 'created_at' (default naming strategy)      */
     @Query(value = """
             SELECT
-              to_char(date_trunc(:bucket, p.created_at), :format) AS bucket,
-              COUNT(*)                                           AS total
+              CAST(to_char(date_trunc(:bucket, p.created_at), :format) AS text) AS bucket,
+              COUNT(*)                                                          AS total
               FROM posts p
              WHERE p.created_at BETWEEN :start AND :end
           GROUP BY bucket
