@@ -77,8 +77,7 @@ public class SecurityConfig {
         config.addAllowedOrigin("http://localhost:4200");
         config.addAllowedOrigin("https://blog-maker-front-production.up.railway.app");
         config.addAllowedOrigin("https://blog-maker-production.up.railway.app");
-        config.addAllowedOrigin("https://acelera-blog-maker.netlify.app/");
-        config.addAllowedOrigin("https://acelera-blog-maker.vercel.app/");
+        config.addAllowedOrigin("https://acelera-blog-maker.vercel.app");
         
         // config.addAllowedOriginPattern("*");
         config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
