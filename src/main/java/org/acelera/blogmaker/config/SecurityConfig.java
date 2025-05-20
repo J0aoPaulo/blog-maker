@@ -54,6 +54,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, API_ANALYTICS).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/posts").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/posts/{id}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/themes").permitAll()
                         .requestMatchers(HttpMethod.GET, API_POSTS).authenticated()
                         .requestMatchers(HttpMethod.POST, API_POSTS).authenticated()
                         .requestMatchers(HttpMethod.PUT, API_POSTS).authenticated()
